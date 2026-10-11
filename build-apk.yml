@@ -1,0 +1,33 @@
+name: Build TWA APK
+
+on:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Build Trusted Web Activity (PWA to APK)
+        uses: GoogleChromeLabs/pwabuilder-android-gen@main
+        with:
+          url: 'https://zaw422369-cpu.github.io/my2dapp/'
+          name: 'Korea 2D 🇰🇷'
+          icon: 'https://zaw422369-cpu.github.io/my2dapp/logo.png'
+          packageId: 'com.zaw422369.korea2dapp'
+          sign: 'true'
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Korea2D-APK
+          path: output/*.apk
